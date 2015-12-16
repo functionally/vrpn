@@ -1,21 +1,21 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <vrpn_Tracker.h>
 #include <vrpn_Analog.h>
+#include <vrpn_Tracker.h>
 
 
 typedef void (PositionCallback)(double, double, double);
 
 
-void VRPN_CALLBACK handle_tracker_pos_quat (void *userdata, const vrpn_TRACKERCB tracker)
+void VRPN_CALLBACK handle_tracker_pos_quat (void *callback, const vrpn_TRACKERCB tracker)
 {
-  ((PositionCallback*) userdata)(tracker.pos[0], tracker.pos[1], tracker.pos[2]);
+  ((PositionCallback*) callback)(tracker.pos[0], tracker.pos[1], tracker.pos[2]);
 }
 
 
-void VRPN_CALLBACK handle_analog (void *userdata, const vrpn_ANALOGCB analog)
+void VRPN_CALLBACK handle_analog (void *callback, const vrpn_ANALOGCB analog)
 {
-  ((PositionCallback*) userdata)(analog.channel[0], analog.channel[1], analog.channel[2]);
+  ((PositionCallback*) callback)(analog.channel[0], analog.channel[1], analog.channel[2]);
 }
 
 

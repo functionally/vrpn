@@ -8,7 +8,7 @@ module Main (
 
 import Foreign.C.String (CString, withCString) 
 import Foreign.C.Types (CDouble(..))
-import Foreign.Ptr (FunPtr)
+import Foreign.Ptr (FunPtr, freeHaskellFunPtr)
 import System.Environment (getArgs)
 
 
@@ -19,7 +19,8 @@ foreign import ccall "wrapper"
   wrap :: PositionCallback -> IO (FunPtr PositionCallback)
 
 
-foreign import ccall "mainLoop" mainLoop :: FunPtr PositionCallback -> CString -> IO ()
+foreign import ccall "mainLoop"
+  mainLoop :: FunPtr PositionCallback -> CString -> IO ()
 
 
 dump :: CDouble -> CDouble -> CDouble -> IO () 
@@ -33,3 +34,4 @@ main =
     dump' <- wrap dump
     withCString device
       $ mainLoop dump'
+    freeHaskellFunPtr dump'
