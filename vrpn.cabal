@@ -1,5 +1,5 @@
 name:                vrpn
-version:             0.2.0.0
+version:             0.2.1.0
 synopsis:            Bindings to VRPN.
 description:         See \<<https://github.com/vrpn/vrpn/wiki>\> for information on VRPN.  This has been tested using VRPN 07.30 on Linux.
 license:             MIT
@@ -12,7 +12,7 @@ build-type:          Simple
 cabal-version:       >= 1.10
 homepage:            https://bitbucket.org/bwbush/vrpn
 bug-reports:         https://bwbush.atlassian.net/projects/HVRPN/issues/
-package-url:         https://bitbucket.org/bwbush/vrpn/vrp-0.2.0.0.tar.gz
+package-url:         https://bitbucket.org/bwbush/vrpn/vrp-0.2.1.0.tar.gz
 
 extra-source-files:  ReadMe.md
 

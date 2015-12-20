@@ -15,7 +15,7 @@ module Main (
 ) where
 
 
-import Network.VRPN (Device(..), closeDevice, mainLoops, openDevice)
+import Network.VRPN (Device(..), mainLoops, withDevices)
 import System.Environment (getArgs)
 import System.IO (hFlush, stdout)
 
@@ -46,6 +46,5 @@ main =
           |
             name <- names
           ]
-    remotes <- mapM openDevice devices
-    mainLoops (return False) (10 :: Double) remotes
-    mapM_ closeDevice remotes
+    withDevices devices
+      $ mainLoops (return False) (10 :: Double)

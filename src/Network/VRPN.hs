@@ -65,6 +65,7 @@ module Network.VRPN (
 -- * Operations on devices
 , openDevice
 , closeDevice
+, withDevices
 , mainLoop
 , mainLoops
 -- * Time
@@ -73,7 +74,7 @@ module Network.VRPN (
 ) where
 
 
-import Control.Monad (unless)
+import Control.Monad (unless, when)
 import Foreign.C.String (CString, withCString) 
 import Foreign.C.Types (CDouble(..), CInt(..), CLong(..))
 import Foreign.Concurrent (newForeignPtr)
@@ -480,6 +481,18 @@ closeDevice :: RemoteDevice -- ^ The device.
 closeDevice (RemoteDevice (device, _)) = finalizeForeignPtr device
 
 
+-- | Operate on devices.
+withDevices :: (Enum s, Enum b, Enum d, RealFloat a)
+            => [Device s b d a]          -- ^ The devices.
+            -> ([RemoteDevice] -> IO ()) -- ^ The operation.
+            -> IO ()                     -- ^ The action for operating on the devices.
+withDevices devices operation =
+  do
+    remotes <- mapM openDevice devices
+    operation remotes
+    mapM_ closeDevice remotes
+
+
 -- | Run the main loop of a device *once*.
 mainLoop :: RemoteDevice -- ^ The device.
          -> IO ()        -- ^ An action for running the main loop of the device *once*.
@@ -495,7 +508,8 @@ mainLoops :: RealFloat a
 mainLoops exitCallback milliseconds devices =
   do
     mapM_ mainLoop devices
-    sleep milliseconds
+    when (milliseconds > 0)
+      $ sleep milliseconds
     exit <- exitCallback
     unless exit
       $ mainLoops exitCallback milliseconds devices
