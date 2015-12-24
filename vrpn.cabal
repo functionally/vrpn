@@ -1,7 +1,9 @@
 name:                vrpn
-version:             0.2.1.0
+version:             0.2.1.1
 synopsis:            Bindings to VRPN.
 description:         See \<<https://github.com/vrpn/vrpn/wiki>\> for information on VRPN.  This has been tested using VRPN 07.30 on Linux.
+                     .
+                     If the VRPN libraries are static and this package is used from Template Haskell, then the package needs to be configured with the QuatStatic flag.
 license:             MIT
 license-file:        LICENSE
 author:              Brian W Bush <consult@brianwbush.info>
@@ -12,13 +14,17 @@ build-type:          Simple
 cabal-version:       >= 1.10
 homepage:            https://bitbucket.org/bwbush/vrpn
 bug-reports:         https://bwbush.atlassian.net/projects/HVRPN/issues/
-package-url:         https://bitbucket.org/bwbush/vrpn/vrp-0.2.1.0.tar.gz
+package-url:         https://bitbucket.org/bwbush/vrpn/vrp-0.2.1.1.tar.gz
 
 extra-source-files:  ReadMe.md
 
 source-repository head
   type: git
   location: https://bwbush@bitbucket.org/bwbush/vrpn.git
+
+flag QuatStatic
+  description:         Explicitly link with static library libquat.a, which is required when using this package with Template Haskell.
+  default:             False
  
 library
   exposed-modules:     Network.VRPN
@@ -29,7 +35,10 @@ library
   C-sources:           src/vrpn.cpp
   include-dirs:        /usr/local/include
   extra-lib-dirs:      /usr/local/lib
-  extra-libraries:     vrpn stdc++
+  if flag(QuatStatic)
+    extra-libraries:   vrpn quat stdc++
+  else
+    extra-libraries:   vrpn stdc++
 
 executable test-vrpn
   main-is:             Main.hs
