@@ -1,10 +1,10 @@
 {-|
-Module      :  Network.VRPN
-Copyright   :  (c) 2015 Brian W Bush
+Module      :  $Header$
+Copyright   :  (c) 2015-19 Brian W Bush
 License     :  MIT
-Maintainer  :  Brian W Bush <consult@brianwbush.info>
+Maintainer  :  Brian W Bush <code@functionally.io>
 Stability   :  Stable
-Portability :  Portable
+Portability :  Linux
 
 Bindings to VRPN, \<<https://github.com/vrpn/vrpn/wiki>\>, and is loosely modeled on the code in \<<https://github.com/vrpn/vrpn/blob/master/client_src/vrpn_print_devices.C>\>.  This has been tested using VRPN 07.30 on Linux.  It requires the VRPN C++ header files.
 
@@ -23,7 +23,7 @@ main =
       -- A remote button that signals completion when the left button is released.
       button :: Device Int ButtonType Double
       button =
-        Button "spacenav0@localhost"
+        Button "spacenav0\@localhost"
           $ Just
           $ \time button state ->
             do
